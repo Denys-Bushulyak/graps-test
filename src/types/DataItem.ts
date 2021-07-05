@@ -1,4 +1,7 @@
-export interface SearchItemResult {
+/**
+ * Mapped search interface
+ */
+export interface DataItem {
   name: string;
   commentsPerHour: number;
   subscribers: ReadonlyArray<number>;

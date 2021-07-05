@@ -1,5 +1,5 @@
-export interface SearchRateService {
-  getSearchesScore(name: string): Promise<number>;
+import { GoogleFindResultData } from "../services/GoogleSearchCounterService";
 
-  getSearchesAvgScore(name: string): Promise<number>;
+export interface SearchRateService {
+  find(keyword: string): Promise<GoogleFindResultData | null>;
 }

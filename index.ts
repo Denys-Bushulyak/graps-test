@@ -1,20 +1,22 @@
 import { DataFetcher } from "./src/services/DataFetcher";
-import { DefaultRankStrategy } from "./src/services/DefaultRankStrategy";
-import { GoogleSearchService } from "./src/services/GoogleSearchService";
-import { RankMachine } from "./src/services/RankMachine";
+import { GoogleSearchCounterService } from "./src/services/GoogleSearchCounterService";
 import { RedditDataProvider } from "./src/services/RedditDataProvider";
-import { RankedItem } from "./src/types/RankedItem";
+import { ScoreAppendService } from "./src/services/ScoreAppendService";
+import { DefaultRankStrategy } from "./src/services/strategies/DefaultRankStrategy";
+import { ScoredItem } from "./src/types/ScoredItem";
 
-function main(): Promise<Array<RankedItem>> {
+function main(): Promise<Array<ScoredItem>> {
+  const service = new GoogleSearchCounterService(
+    new DataFetcher("https://grasp-assets.s3.amazonaws.com/google_data.json")
+  );
+  const scoreAppendService = new ScoreAppendService();
+  scoreAppendService.strategy = new DefaultRankStrategy(service);
+
   const source = new RedditDataProvider(
     new DataFetcher("https://grasp-assets.s3.amazonaws.com/reddit_data.json")
   );
-  const googleSearchService = new GoogleSearchService(
-    new DataFetcher("https://grasp-assets.s3.amazonaws.com/google_data.json")
-  );
 
-  const machine = new RankMachine(new DefaultRankStrategy(googleSearchService));
-  return machine.score(source);
+  return scoreAppendService.score(source);
 }
 
 main().then(console.dir).catch(console.dir);
