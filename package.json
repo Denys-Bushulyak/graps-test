@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc index.ts",
-    "run": "ts-node -r esm index.ts",
-    "test": "jest --coverage"
+    "exec": "ts-node -r esm index.ts",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
